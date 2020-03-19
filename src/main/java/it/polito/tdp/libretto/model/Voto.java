@@ -2,24 +2,31 @@ package it.polito.tdp.libretto.model;
 
 import java.time.LocalDate;
 
+//deve rappresentare gli oggetti di tipo voto
+//-nome corso
+//-voto
+//data
+//solo gli esami superati 
+
 /**
- * Classe Voto, contiene le informazioni su un esame
- * superato.
+ * Classe Voto contiene le informazioni su un esame
  * 
- * @author Fulvio
+ * @author sabinoMac13
  *
  */
+
 public class Voto {
+	private String corso; //nome del corso, e' un attributo di voto
+	private int voto;
+	private LocalDate data; //per rappresentare una data in java possiamo usare sia la classe date predisposta, ma ha molti problemi, preferiamo non usarla 
 	
-	private String corso ; // "Tecniche di Programmazione"
-	private int voto ; // 28
-	private LocalDate data ; // 15/06/2020
+	//questo sistema di commenti permette di creare la documentazione e conviene farlo quando ci sono delle funzioni che devono essere richiamate dall'esterno 
 	
 	/**
-	 * Costruisce un nuovo Voto.
-	 * 
+	 * Costruisce un nuovo voto
+	 *  
 	 * @param corso nome del corso superato
-	 * @param voto valore del voto acquisito
+	 * @param voto  valore del voto acquisito
 	 * @param data data di superamento dell'esame
 	 */
 	public Voto(String corso, int voto, LocalDate data) {
@@ -53,13 +60,14 @@ public class Voto {
 		this.data = data;
 	}
 
+	//metodo che mi dice come visualizzare il voto quando lo stampo
 	@Override
 	public String toString() {
-		return corso + ": " + voto + " (" + data + ")";
+		return corso+": " + voto + " (" + data + ")";
 	}
 	
-	
-	
-	
 
+
+	
+	
 }
