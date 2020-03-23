@@ -1,6 +1,7 @@
 package it.polito.tdp.libretto.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List; //attenta sempre java.util.list non awt
 
 /**
@@ -12,6 +13,26 @@ import java.util.List; //attenta sempre java.util.list non awt
 public class Libretto {
 
 	private List <Voto> voti=new ArrayList <>(); //potrei omettere <Voto> dopo perche Java lo capisce da solo 
+	
+	
+	/**
+	 * Costruttore che prima java generava di default, crea un libretto nuovo e vuoto
+	 */
+	public Libretto() {
+		super();
+	}
+
+	//definisco il copy constructor, ma devo avere definito anche il costruttore di libretto, perche una volta che ho il copy constructor
+	//a differenza di prima in cui anche senza il costruttore, java lo definiva di default, ora c'è un conflitto
+	/**
+	 * Copy Constructor
+	 *"Shallow", copia superficiale
+	 * @param lib
+	 */
+	public Libretto (Libretto lib) {
+		super (); //fa una copia dell'oggetto corrente, ma non fa una copia dell'oggetto contenuto in esso 
+		this.voti.addAll(lib.voti); //posso farlo perche essendo in una classe di tipo libretto ho libero accesso ai voti
+	}
 
 	/*
 	/**
@@ -168,6 +189,73 @@ public class Libretto {
 		return (esiste.getVoto()!=v.getVoto()); 
 
 	}
+	
+	/**
+	 * Restituisce un nuovo libretto migliorando i voti del libretto attuale 
+	 * 
+	 * @return
+	 */
+	public Libretto creaLibrettoMigliorato() {
+		//creiamo un nuov libretto
+		Libretto nuovo = new Libretto(); //nuovo libretto nuovo, this libretto attuale
+		
+		for (Voto v : this.voti) {
+			//aggiungo al libretto il voto migliorato
+			//Voto v2 = new Voto (v); // qui c'e un errore perche sto riusando gli oggetti voto precedenti, quando inserisco v2 inserisco nel nuovo libretto l'oggetto precedente 
+			Voto v2= v.clone(); // posso usare indipendentemente clone o copy constructor
+			
+			//Voto v2 = new Voto (v.getCorso(),v.getVoto(),v.getData()); NO perche se poi cambio qualcosa devo modificare tutto
+			
+			if(v2.getVoto()>= 24) {
+				v2.setVoto(v2.getVoto()+2);
+				if (v2.getVoto()>30) {
+					v2.setVoto(30);
+				}
+			} else if (v2.getVoto()>=18) {
+				v2.setVoto(v2.getVoto()+1);
+			}
+			nuovo.add(v2); //ho aggiunto l'alias con cui ho chiamato l'oggett  precedente v, che ora si chiama anche v2, è sempre lui. Ho due arraylist diversiche puntano allo stesso oggetto
+		}
+		
+		return nuovo;
+	}
+	
+	
+	//Il criterio di ordinamento può essere definito in due modi, uno naturale nativo e dei metodi di ordinamento alternativi
+	//In questo caso useremo l'ordinaento alfabetico come ordinamento naturale e l'ordinamento per voto come ordinamento aggiuntivo
+	/**
+	 * Riordina i voti presenti nel libretto corrente alfabeticamente per corso
+	 */
+	public void ordinaPerCorso() {
+		Collections.sort(this.voti); //ordina la lista in ordine crescente usando l'ordine naturale degli elementi
+	}
 
+	public void ordinaPerVoto() {
+		Collections.sort(this.voti, new ConfrontaVotiPerValutazione());; //ordina la lista in ordine crescente usando l'ordine naturale degli elementi
+		//il metodo sort funziona solo con la classe comparator 
+		// this.voti.sort(new ConforntVotiPerValutazione());
+	}
+	
+	/**
+	 * Elimina dal libretto tutti i voti <24
+	 */
+	public void cancellaVotiScarsi() {
+		//faccio prima un ciclo in cui trovo gli elementi da cancellare e poi un secondo ciclo in cui rimuovo effettiavmente gli oggetti che devo cancellare
+		
+		List <Voto> daRimuovere = new ArrayList <>();
+		for (Voto v: this.voti) { //non posso modificare una lista se ho in corso una iterazione sulla lista stessa
+			if (v.getVoto()<24) {
+				daRimuovere.add(v);
+			}
+		}
+		
+		//Questa parte è ridondante
+		/*for (Voto v :daRimuovere) {
+			this.voti.remove(v);
+		}*/
+		
+		this.voti.removeAll(daRimuovere); // fa lui internamente il ciclo che io avevo scritto sopra
+		
+	}
 	
 }

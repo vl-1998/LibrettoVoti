@@ -15,7 +15,8 @@ import java.time.LocalDate;
  *
  */
 
-public class Voto {
+//la classe voto deve sapere come confrontarsi con altri oggetti della classe voto 
+public class Voto implements Comparable<Voto>{
 	private String corso; //nome del corso, e' un attributo di voto
 	private int voto;
 	private LocalDate data; //per rappresentare una data in java possiamo usare sia la classe date predisposta, ma ha molti problemi, preferiamo non usarla 
@@ -34,6 +35,19 @@ public class Voto {
 		this.corso = corso;
 		this.voto = voto;
 		this.data = data;
+	}
+	
+	//creo il clone del voto, creandoun copy constructor
+	/**
+	 * Copy constructor di Voto, crea un nuovo Voto copiando il contenuto del parametro li
+	 * 
+	 * @param v il voto da copiare
+	 */
+	public Voto (Voto v) {
+		//creo una stringa nuova che abbia quello stesso contenuto , ma le stringhe sono immutabili, quindi non serva a nulla this.corso= new String (v.corso);
+		this.corso= v.corso; //anzichè v.getCorso() perche se voglio accedere ai campi di un oggetto che e dello stesso tipo posso bypassarlo
+		this.data= v.data; 
+		this.voto= v.voto; 
 	}
 
 	public String getCorso() {
@@ -93,6 +107,34 @@ public class Voto {
 		return true; //due oggetti sono considerati uguali se il nome del corso è uguale all'attributo corso dell'altro
 	}
 	
+	//metodo che fa la copia dell'oggetto (solitamente o questo o il copy constructor
+	/**
+	 * Metodo che crea una copia (clone) dell'oggetto esistente come un nuovo oggetto 
+	 * 
+	 * @return voto clonato
+	 */
+	public Voto clone() {
+		Voto v= new Voto(this.corso, this.voto, this.data);
+		return v;
+	}
+
+	
+	//metodo che confronta quetso voto (this) con un altro voto (other)
+	//unico metodo che devo implementare per rendere un oggetto comparable
+	
+	//Questo metodo ha senso se definito solo per oggetti che hanno un criterio di ordinamento
+	@Override
+	public int compareTo(Voto other) {
+		/*
+		 * <0 se this < other
+		 * =0 se this = other
+		 * >0 se this > other
+		 */
+		
+		//Sto confrontando delle stringhe che hanno gia il metodo comparable
+		return this.corso.compareTo(other.corso); //delego il confronto tra oggetti voto a un confronto tra oggetti stringa
+		
+	}
 	
 	
 

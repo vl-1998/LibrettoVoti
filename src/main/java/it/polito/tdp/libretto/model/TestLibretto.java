@@ -44,6 +44,29 @@ public class TestLibretto {
 		System.out.println("Economia con 24 e' duplicato: "+lib.isDuplicato(economia2)+"/conflitto:"+lib.isConflitto(economia2));
 		System.out.println("Economia con 24 e' duplicato: "+lib.isDuplicato(economia3)+"/conflitto:"+lib.isConflitto(economia3));
 
+		//7. migliora libretto
+		Libretto migliorato = lib.creaLibrettoMigliorato();
+		System.out.println("\nMiglioramento del libretto");
+		System.out.println(lib);
+		System.out.println(migliorato);
+		
+		//8. stampare il libretto in ordine alfabetico di esame ed in ordine numerico decrescente di voto
+		//bisogna capire se si sta mettendo in ordine il libretto di partenza o una copia del libretto
+		Libretto alfabetico = new Libretto(lib); //uso il copy constructor
+		alfabetico.ordinaPerCorso();
+		System.out.println(alfabetico);
+		
+		Libretto votiDecrescenti = new Libretto(lib); //uso il copy constructor
+		votiDecrescenti.ordinaPerVoto();
+		System.out.println(votiDecrescenti); 
+		
+		//9. cancellare dal libretto tutti i voti bassi
+		lib.add(new Voto ("Chimica", 19, LocalDate.now()));
+		lib.ordinaPerCorso();
+		System.out.println(lib);
+		lib.cancellaVotiScarsi();
+		System.out.println(lib);
+
 	}
 
 	public static void main(String[] args) { //tutto il lavoro che devo fare e' nel run, non si lavora dentro il main
@@ -51,6 +74,7 @@ public class TestLibretto {
 		test.run();
 
 	}
+	
 	
 	
 }
